@@ -7,6 +7,21 @@ const STORAGE_KEYS = {
 const languageList = [
   "Sinhala", "English", "Hindi", "Tamil", "Arabic", "Indonesian", "Filipino", "Spanish", "French", "Korean", "Japanese", "Chinese", "Thai", "Vietnamese", "Malay", "Bengali", "Urdu", "Portuguese", "German", "Italian", "Russian", "Turkish"
 ];
+const geminiModels = [
+  "gemini-3-flash-preview",
+  "gemini-3.1-flash-lite-preview",
+  "gemini-3.1-pro-preview",
+  "gemini-3.5-flash",
+  "gemini-3.1-flash-lite",
+  "gemini-2.5-flash",
+  "gemini-2.5-flash-lite",
+  "gemini-2.5-pro",
+  "gemini-2.0-flash-lite",
+  "gemini-2.0-flash"
+];
+
+const DEFAULT_MODEL = "gemini-2.5-flash";
+
 
 const stylePrompts = {
   normal: "Use clear, natural, subtitle-friendly language for native {TARGET_LANGUAGE} speakers. Avoid robotic or overly literal translation.",
@@ -40,6 +55,7 @@ const $ = (id) => document.getElementById(id);
 function init() {
   loadState();
   populateLanguages();
+  populateModels();
   renderKeys();
   bindEvents();
   restoreProgressIfAny();
@@ -72,6 +88,24 @@ function getSettings() {
   };
 }
 
+function populateModels() {
+  const select = $("modelName");
+  if (!select) return;
+
+  const settings = safeJsonParse(localStorage.getItem(STORAGE_KEYS.settings), {});
+  const savedModel = settings.modelName;
+
+  select.innerHTML = "";
+  geminiModels.forEach((model) => {
+    const opt = document.createElement("option");
+    opt.value = model;
+    opt.textContent = model;
+    select.appendChild(opt);
+  });
+
+  select.value = geminiModels.includes(savedModel) ? savedModel : DEFAULT_MODEL;
+}
+
 function populateLanguages() {
   const target = $("targetLanguage");
   target.innerHTML = "";
@@ -85,7 +119,7 @@ function populateLanguages() {
 
   const settings = safeJsonParse(localStorage.getItem(STORAGE_KEYS.settings), {});
   for (const [key, value] of Object.entries(settings)) {
-    if ($(key) && key !== "activeKeyIndex") $(key).value = value;
+    if ($(key) && key !== "activeKeyIndex" && key !== "modelName") $(key).value = value;
   }
 }
 

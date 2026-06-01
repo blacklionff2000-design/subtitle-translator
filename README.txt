@@ -1,22 +1,16 @@
-Black Lion Subtitle Translator Pro - Static Version
+Black Lion Subtitle Translator Pro - Static Version v2.1
 
-Files:
-- index.html
-- style.css
-- app.js
+Updated Gemini model dropdown includes:
+- gemini-3-flash-preview
+- gemini-3.1-flash-lite-preview
+- gemini-3.1-pro-preview
+- gemini-3.5-flash
+- gemini-3.1-flash-lite
+- gemini-2.5-flash
+- gemini-2.5-flash-lite
+- gemini-2.5-pro
+- gemini-2.0-flash-lite
+- gemini-2.0-flash
 
-How to host on GitHub Pages:
-1. Create a new GitHub repository.
-2. Upload index.html, style.css, and app.js to the repository root.
-3. Go to Settings > Pages.
-4. Under Build and deployment, select Deploy from a branch.
-5. Select main branch and /root folder.
-6. Save.
-7. Open the GitHub Pages URL after deployment.
-
-Important:
-- This version does not need WordPress.
-- This version does not need a backend.
-- User API keys are saved in the user's own browser localStorage.
-- Backup export is plain JSON. Keep backup files safe.
-- Supported subtitle formats: SRT, VTT, TXT.
+Upload index.html, style.css, and app.js to GitHub Pages.
+If old models appear, clear browser cache or open in incognito.
