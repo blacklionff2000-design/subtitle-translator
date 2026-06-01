@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Black Lion Subtitle Translator Pro</title>
+  <meta name="description" content="AI subtitle translator using your own Gemini API keys. Supports SRT, VTT and TXT." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <main class="app-shell">
+    <section class="hero card">
+      <div>
+        <p class="eyebrow">BLACK LION FF</p>
+        <h1>Subtitle Translator Pro</h1>
+        <p class="hero-text">Translate subtitle files into any language using your own Gemini API keys. Your keys stay on your device.</p>
+      </div>
+      <div class="hero-badges">
+        <span>SRT</span><span>VTT</span><span>TXT</span><span>Gemini</span>
+      </div>
+    </section>
+
+    <section class="grid-2">
+      <div class="card">
+        <div class="section-title">
+          <h2>API Key Manager</h2>
+          <p>Add multiple Gemini API keys. If one key hits quota, the app can switch to the next key.</p>
+        </div>
+
+        <label class="field-label" for="keyName">Key Name</label>
+        <input id="keyName" class="input" placeholder="Example: Gemini Key 1" />
+
+        <label class="field-label" for="apiKey">Gemini API Key</label>
+        <div class="inline-input">
+          <input id="apiKey" class="input" type="password" placeholder="Paste Gemini API key" />
+          <button id="toggleKeyBtn" class="btn ghost" type="button">Show</button>
+        </div>
+
+        <div class="button-row">
+          <button id="addKeyBtn" class="btn primary" type="button">Add Key</button>
+          <button id="exportKeysBtn" class="btn" type="button">Export Backup</button>
+          <label class="btn file-btn" for="importKeysFile">Import Backup</label>
+          <input id="importKeysFile" type="file" accept="application/json,.json" hidden />
+        </div>
+
+        <div class="privacy-note">
+          Your API keys are saved only in this browser/device. Keep exported backup files safe.
+        </div>
+
+        <div id="keysList" class="keys-list"></div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">
+          <h2>Translator Settings</h2>
+          <p>Choose target language, subtitle style and profanity handling.</p>
+        </div>
+
+        <label class="field-label" for="sourceLanguage">Source Language</label>
+        <select id="sourceLanguage" class="input">
+          <option value="Auto Detect">Auto Detect</option>
+          <option>English</option>
+          <option>Korean</option>
+          <option>Chinese</option>
+          <option>Japanese</option>
+          <option>Hindi</option>
+          <option>Tamil</option>
+          <option>Sinhala</option>
+          <option>Spanish</option>
+          <option>French</option>
+          <option>Arabic</option>
+          <option>Indonesian</option>
+          <option>Filipino</option>
+        </select>
+
+        <label class="field-label" for="targetLanguage">Target Language</label>
+        <select id="targetLanguage" class="input"></select>
+
+        <label class="field-label" for="translationStyle">Translation Style</label>
+        <select id="translationStyle" class="input">
+          <option value="normal">Normal Subtitle</option>
+          <option value="kdrama">Korean Drama</option>
+          <option value="koreanHistorical">Korean Historical Drama</option>
+          <option value="chineseWuxia">Chinese Historical / Wuxia / Xianxia</option>
+          <option value="actionCrime">Action / Crime / Thriller</option>
+          <option value="comedy">Comedy</option>
+          <option value="animeFantasy">Anime / Fantasy</option>
+        </select>
+
+        <label class="field-label" for="profanityMode">Profanity Mode</label>
+        <select id="profanityMode" class="input">
+          <option value="noProfanity">No Profanity / Clean</option>
+          <option value="softClean">Soft Clean</option>
+          <option value="keepMeaning">Keep Original Meaning</option>
+          <option value="strongAdult">Strong Adult 18+</option>
+        </select>
+
+        <label class="field-label" for="modelName">Gemini Model</label>
+        <select id="modelName" class="input">
+          <option value="gemini-3-flash-preview">gemini-3-flash-preview</option>
+          <option value="gemini-3.1-flash-lite-preview">gemini-3.1-flash-lite-preview</option>
+          <option value="gemini-3.1-pro-preview">gemini-3.1-pro-preview</option>
+          <option value="gemini-3.5-flash">gemini-3.5-flash</option>
+          <option value="gemini-3.1-flash-lite">gemini-3.1-flash-lite</option>
+          <option value="gemini-2.5-flash" selected>gemini-2.5-flash</option>
+          <option value="gemini-2.5-flash-lite">gemini-2.5-flash-lite</option>
+          <option value="gemini-2.5-pro">gemini-2.5-pro</option>
+          <option value="gemini-2.0-flash-lite">gemini-2.0-flash-lite</option>
+          <option value="gemini-2.0-flash">gemini-2.0-flash</option>
+        </select>
+
+        <label class="field-label" for="chunkSize">Chunk Size</label>
+        <input id="chunkSize" class="input" type="number" min="5" max="80" value="20" />
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="section-title">
+        <h2>Upload Subtitle</h2>
+        <p>Supported formats: .srt, .vtt, .txt. The same format will be downloaded after translation.</p>
+      </div>
+
+      <div class="upload-box" id="uploadBox">
+        <input id="subtitleFile" type="file" accept=".srt,.vtt,.txt,text/plain,text/vtt" hidden />
+        <button id="chooseFileBtn" class="btn primary" type="button">Choose Subtitle File</button>
+        <p id="fileInfo">No file selected</p>
+      </div>
+
+      <textarea id="previewBox" class="preview" placeholder="Subtitle preview will appear here..." spellcheck="false"></textarea>
+
+      <div class="button-row">
+        <button id="startBtn" class="btn primary" type="button">Start Translate</button>
+        <button id="pauseBtn" class="btn" type="button" disabled>Pause</button>
+        <button id="resumeBtn" class="btn" type="button" disabled>Resume</button>
+        <button id="clearProgressBtn" class="btn danger" type="button">Clear Progress</button>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-meta">
+          <span id="progressText">Progress: 0%</span>
+          <span id="statusText">Ready</span>
+        </div>
+        <div class="progress-bar"><div id="progressFill"></div></div>
+      </div>
+
+      <textarea id="outputBox" class="preview output" placeholder="Translated output will appear here..." spellcheck="false"></textarea>
+
+      <div class="button-row">
+        <button id="downloadBtn" class="btn primary" type="button" disabled>Download Translated File</button>
+        <button id="downloadPartialBtn" class="btn" type="button" disabled>Download Partial</button>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>Black Lion Subtitle Translator Pro • User-owned API keys • Browser-based translation</p>
+    </footer>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
